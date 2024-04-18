@@ -53,6 +53,7 @@ class Minesweeper:
         else:
             adjacent_mines = self.count_adjacent_mines(row, col)
             self.buttons[row][col].config(text=str(adjacent_mines))
+            self.set_num_color(row, col, adjacent_mines)
             if adjacent_mines == 0:
                 self.reveal_empty_cells(row, col)
 
@@ -85,6 +86,25 @@ class Minesweeper:
         '''
         for row, col in self.mine_coords:
             self.buttons[row][col].config(text="*")
+
+    def set_num_color(self, row, col, text):
+        '''
+        数字に色を付ける
+        Args:
+            row (int): 行
+            col (int): 列
+            text (str): テキスト
+        '''
+        button = self.buttons[row][col]
+        button.config(text=text)
+
+        if text == 1:
+            button.config(fg="blue")
+        elif text == 2:
+            button.config(fg="green")
+        elif text >= 3:
+            button.config(fg="red")
+
 
 def main():
     root = tk.Tk()
