@@ -1,0 +1,2 @@
+# Minesweepy
+Pythonで作るマインスイーパー
