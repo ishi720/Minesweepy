@@ -10,6 +10,8 @@ class Minesweeper:
         self.mines = mines
         self.buttons = []
         self.game_over = False
+        self.cells_to_open = rows * cols - mines
+        self.open_cells = 0
 
         # ゲームボードの作成
         for row in range(self.rows):
@@ -54,8 +56,15 @@ class Minesweeper:
             adjacent_mines = self.count_adjacent_mines(row, col)
             self.buttons[row][col].config(text=str(adjacent_mines))
             self.set_num_color(row, col, adjacent_mines)
+            self.open_cells += 1
             if adjacent_mines == 0:
                 self.reveal_empty_cells(row, col)
+
+            # ゲームクリアの処理
+            if self.open_cells == self.cells_to_open:
+                self.game_over = True
+                messagebox.showinfo("Game Clear", "Congratulations! You have cleared the game.")
+
 
     def count_adjacent_mines(self, row, col):
         '''
