@@ -3,7 +3,7 @@ from tkinter import messagebox
 import random
 
 class Minesweeper:
-    def __init__(self, master, rows=10, cols=10, mines=100):
+    def __init__(self, master, rows=10, cols=10, mines=10):
         self.master = master
         self.rows = rows
         self.cols = cols
@@ -11,7 +11,7 @@ class Minesweeper:
         self.buttons = []
         self.game_over = False
 
-        # Create grid
+        # ゲームボードの作成
         for row in range(self.rows):
             button_row = []
             for col in range(self.cols):
@@ -20,10 +20,13 @@ class Minesweeper:
                 button_row.append(button)
             self.buttons.append(button_row)
 
-        # Place mines
+        # 地雷の配置
         self.place_mines()
 
     def place_mines(self):
+        '''
+        地雷の配置
+        '''
         self.mine_coords = set()
         total_cells = self.rows * self.cols
         mine_indices = random.sample(range(total_cells), self.mines)
@@ -34,6 +37,12 @@ class Minesweeper:
             self.mine_coords.add((row, col))
 
     def click(self, row, col):
+        '''
+        セルをクリックした時の処理
+        Args:
+            row (int): 行
+            col (int): 列
+        '''
         if self.game_over:
             return
 
@@ -48,6 +57,12 @@ class Minesweeper:
                 self.reveal_empty_cells(row, col)
 
     def count_adjacent_mines(self, row, col):
+        '''
+        指定されたセルの周囲にある地雷の数を数える
+        Args:
+            row (int): 行
+            col (int): 列
+        '''
         count = 0
         for r in range(max(0, row - 1), min(self.rows, row + 2)):
             for c in range(max(0, col - 1), min(self.cols, col + 2)):
@@ -56,12 +71,18 @@ class Minesweeper:
         return count
 
     def reveal_empty_cells(self, row, col):
+        '''
+        セルが空の場合に周囲のセルを再帰的に開示する
+        '''
         for r in range(max(0, row - 1), min(self.rows, row + 2)):
             for c in range(max(0, col - 1), min(self.cols, col + 2)):
                 if self.buttons[r][c]["text"] == "":
                     self.click(r, c)
 
     def reveal_mines(self):
+        '''
+        ゲームが終了したときにすべての地雷を表示
+        '''
         for row, col in self.mine_coords:
             self.buttons[row][col].config(text="*")
 
