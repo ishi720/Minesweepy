@@ -25,9 +25,12 @@ class Minesweeper:
 
     def place_mines(self):
         self.mine_coords = set()
-        while len(self.mine_coords) < self.mines:
-            row = random.randint(0, self.rows - 1)
-            col = random.randint(0, self.cols - 1)
+        total_cells = self.rows * self.cols
+        mine_indices = random.sample(range(total_cells), self.mines)
+
+        for index in mine_indices:
+            row = index // self.cols
+            col = index % self.cols
             self.mine_coords.add((row, col))
 
     def click(self, row, col):
