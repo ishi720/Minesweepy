@@ -57,7 +57,7 @@ class Minesweeper:
             messagebox.showinfo("Game Over", "You clicked on a mine! Game over.")
         else:
             adjacent_mines = self.count_adjacent_mines(row, col)
-            self.buttons[row][col].config(text=str(adjacent_mines))
+            self.buttons[row][col].config(text=str(adjacent_mines), bg="#ccc")
             self.set_num_color(row, col, adjacent_mines)
             self.open_cells += 1
             if adjacent_mines == 0:
