@@ -85,7 +85,7 @@ class Minesweeper:
         if cell in self.flags:
             self.flags.remove(cell)
             self.buttons[row][col].config(text="")
-        else:
+        elif self.buttons[row][col]["text"] == "":
             self.flags.add(cell)
             self.buttons[row][col].config(text="🚩")
 
