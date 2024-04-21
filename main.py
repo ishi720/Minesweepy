@@ -74,11 +74,15 @@ class Minesweeper:
         if self.game_over:
             return
 
+        if (row, col) in self.flags:
+            return
+
         if self.first_click:
             self.place_mines(row, col)
             self.first_click = False
 
         if (row, col) in self.mine_coords:
+            # ゲームオーバーの処理
             self.game_over = True
             self.reveal_mines()
             messagebox.showinfo("Game Over", "You clicked on a mine! Game over.")
