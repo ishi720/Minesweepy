@@ -2,6 +2,32 @@ import tkinter as tk
 from tkinter import messagebox
 import random
 
+
+class StartMenu:
+    """
+    スタート画面クラス
+    """
+    def __init__(self, master):
+        self.master = master
+        self.label = tk.Label(master, text="地雷の数を指定")
+        self.label.pack()
+        self.default_mines = tk.StringVar(value="10")  # デフォルトの地雷の数を設定
+        self.spin = tk.Spinbox(master, from_=1, to=100, textvariable=self.default_mines)
+        self.spin.pack()
+        self.start_button = tk.Button(master, text="Start", command=self.start_game)
+        self.start_button.pack()
+
+    def start_game(self):
+        try:
+            mines = int(self.spin.get())
+            self.master.destroy()  # Close start menu
+            root = tk.Tk()
+            root.title("Minesweeper")
+            _ = Minesweeper(root, mines=mines)
+            root.mainloop()
+        except ValueError:
+            messagebox.showerror("Error", "Please enter a valid number for mines.")
+
 class Minesweeper:
     """
     マインスイーパークラス
@@ -177,7 +203,7 @@ class Minesweeper:
 def main():
     root = tk.Tk()
     root.title("Minesweeper")
-    _ = Minesweeper(root)
+    _ = StartMenu(root)
     root.mainloop()
 
 if __name__ == "__main__":
