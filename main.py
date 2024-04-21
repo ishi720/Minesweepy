@@ -8,14 +8,14 @@ class Minesweeper:
     """
     def __init__(self, master, rows=10, cols=10, mines=10):
         self.master = master
-        self.rows = rows
-        self.cols = cols
-        self.mines = mines
-        self.buttons = []
-        self.game_over = False
-        self.cells_to_open = rows * cols - mines
-        self.open_cells = 0
-        self.flags = set()
+        self.rows = rows # 列数
+        self.cols = cols # 行数
+        self.mines = mines # 地雷の数
+        self.buttons = [] # セルの配列
+        self.game_over = False # ゲームオーバーのフラグ
+        self.cells_to_open = rows * cols - mines # 開いていないセルの数
+        self.open_cells = 0 # 開かれたセルの数
+        self.flags = set() # 設置されたフラグのセット
 
         # ゲームボードの作成
         for row in range(self.rows):
