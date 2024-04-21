@@ -16,6 +16,7 @@ class Minesweeper:
         self.cells_to_open = rows * cols - mines # 開いていないセルの数
         self.open_cells = 0 # 開かれたセルの数
         self.flags = set() # 設置されたフラグのセット
+        self.first_click = True # 最初のクリックかどうかのフラグ
 
         # ゲームボードの作成
         for row in range(self.rows):
@@ -28,21 +29,40 @@ class Minesweeper:
                 button_row.append(button)
             self.buttons.append(button_row)
 
-        # 地雷の配置
-        self.place_mines()
-
-    def place_mines(self):
+    def place_mines(self, first_click_row, first_click_col):
         """
         地雷の配置
         """
         self.mine_coords = set()
         total_cells = self.rows * self.cols
-        mine_indices = random.sample(range(total_cells), self.mines)
+        safe_cells = set(self.get_surrounding_cells(first_click_row, first_click_col))
+        safe_cells.add((first_click_row, first_click_col))
+        available_cells = [cell for cell in range(total_cells) if (cell // self.cols, cell % self.cols) not in safe_cells]
+        mine_indices = random.sample(available_cells, self.mines)
 
         for index in mine_indices:
             row = index // self.cols
             col = index % self.cols
             self.mine_coords.add((row, col))
+
+    def get_surrounding_cells(self, row, col):
+        """
+        指定されたセルの周囲のセルをセットに追加する
+        Args:
+            row (int): 行
+            col (int): 列
+        Returns:
+            set: 周囲のセルのセット
+        """
+        surrounding_cells = set()
+
+        # 行と列の範囲を指定
+        for r in range(max(0, row - 1), min(self.rows, row + 2)):
+            for c in range(max(0, col - 1), min(self.cols, col + 2)):
+                # セルをセットに追加
+                surrounding_cells.add((r, c))
+
+        return surrounding_cells
 
     def left_click(self, event, row, col):
         """
@@ -53,6 +73,10 @@ class Minesweeper:
         """
         if self.game_over:
             return
+
+        if self.first_click:
+            self.place_mines(row, col)
+            self.first_click = False
 
         if (row, col) in self.mine_coords:
             self.game_over = True
