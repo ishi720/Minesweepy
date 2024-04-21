@@ -20,8 +20,10 @@ class Minesweeper:
         for row in range(self.rows):
             button_row = []
             for col in range(self.cols):
-                button = tk.Button(master, width=2, command=lambda r=row, c=col: self.click(r, c))
+                button = tk.Button(master, width=2)
                 button.grid(row=row, column=col)
+                button.bind('<Button-1>', lambda event, r=row, c=col: self.left_click(event, r, c))
+                button.bind('<Button-3>', lambda event, r=row, c=col: self.right_click(event, r, c))
                 button_row.append(button)
             self.buttons.append(button_row)
 
@@ -41,9 +43,9 @@ class Minesweeper:
             col = index % self.cols
             self.mine_coords.add((row, col))
 
-    def click(self, row, col):
+    def left_click(self, event, row, col):
         """
-        セルをクリックした時の処理
+        左クリック時の処理
         Args:
             row (int): 行
             col (int): 列
@@ -68,6 +70,19 @@ class Minesweeper:
                 self.game_over = True
                 messagebox.showinfo("Game Clear", "Congratulations! You have cleared the game.")
 
+    def right_click(self, event, row, col):
+        """
+        右クリック時の処理
+        Args:
+            row (int): 行
+            col (int): 列
+        """
+        if self.game_over:
+            return
+
+        button = self.buttons[row][col]
+        if button.cget("text") == "":
+            button.config(text="🚩")
 
     def count_adjacent_mines(self, row, col):
         """
@@ -92,7 +107,7 @@ class Minesweeper:
         for r in range(max(0, row - 1), min(self.rows, row + 2)):
             for c in range(max(0, col - 1), min(self.cols, col + 2)):
                 if self.buttons[r][c]["text"] == "":
-                    self.click(r, c)
+                    self.left_click(None, r, c)
 
     def reveal_mines(self):
         """
