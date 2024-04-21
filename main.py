@@ -149,7 +149,7 @@ class Minesweeper:
 def main():
     root = tk.Tk()
     root.title("Minesweeper")
-    minesweeper = Minesweeper(root)
+    _ = Minesweeper(root)
     root.mainloop()
 
 if __name__ == "__main__":
