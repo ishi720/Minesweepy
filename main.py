@@ -15,6 +15,7 @@ class Minesweeper:
         self.game_over = False
         self.cells_to_open = rows * cols - mines
         self.open_cells = 0
+        self.flags = set()
 
         # ゲームボードの作成
         for row in range(self.rows):
@@ -80,9 +81,13 @@ class Minesweeper:
         if self.game_over:
             return
 
-        button = self.buttons[row][col]
-        if button.cget("text") == "":
-            button.config(text="🚩")
+        cell = (row, col)
+        if cell in self.flags:
+            self.flags.remove(cell)
+            self.buttons[row][col].config(text="")
+        else:
+            self.flags.add(cell)
+            self.buttons[row][col].config(text="🚩")
 
     def count_adjacent_mines(self, row, col):
         """
