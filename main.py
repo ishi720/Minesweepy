@@ -128,11 +128,23 @@ class Minesweeper:
         button.config(text=text)
 
         if text == 1:
-            button.config(fg="blue")
+            button.config(fg="#0000ff") # 青
         elif text == 2:
-            button.config(fg="green")
-        elif text >= 3:
-            button.config(fg="red")
+            button.config(fg="#008727") # 緑
+        elif text == 3:
+            button.config(fg="#ff0000") # 赤
+        elif text == 4:
+            button.config(fg="#223a70") # 紺
+        elif text == 5:
+            button.config(fg="#b4533c") # 茶
+        elif text == 6:
+            button.config(fg="#00ffff") # シアン
+        elif text == 7:
+            button.config(fg="#000000") # 黒
+        elif text == 8:
+            button.config(fg="#666666") # 灰色
+
+
 
 
 def main():
