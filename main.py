@@ -2,7 +2,6 @@ import tkinter as tk
 from tkinter import messagebox
 import random
 
-
 class StartMenu:
     """
     スタート画面クラス
@@ -124,6 +123,9 @@ class Minesweeper:
             if self.open_cells == self.cells_to_open:
                 self.game_over = True
                 messagebox.showinfo("Game Clear", "Congratulations! You have cleared the game.")
+
+        # イベントハンドラを削除してセルをクリック後に無効にする
+        self.buttons[row][col].unbind('<Button-1>')
 
     def right_click(self, event, row, col):
         """
