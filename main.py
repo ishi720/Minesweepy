@@ -2,6 +2,7 @@ import tkinter as tk
 from tkinter import messagebox
 import random
 import time
+from tkinter import ttk
 
 class StartMenu:
     """
@@ -22,10 +23,8 @@ class StartMenu:
         self.spin = tk.Spinbox(master, from_=1, to=100, textvariable=self.default_mines)
         self.spin.pack()
 
-        self.start_button = tk.Button(master, text="Start", command=self.start_game)
-        self.start_button.pack()
-
-
+        self.start_button = ttk.Button(master, text="ゲームスタート", command=self.start_game, style='TButton')
+        self.start_button.place(relx=0.5, rely=0.7, anchor='center')
 
     def start_game(self):
         try:
