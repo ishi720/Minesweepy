@@ -132,6 +132,8 @@ class Minesweeper:
             self.game_over = True
             self.reveal_mines()
             messagebox.showinfo("Game Over", "You clicked on a mine! Game over.")
+            self.master.destroy()
+            self.return_to_start_menu()
         else:
             adjacent_mines = self.count_adjacent_mines(row, col)
             self.buttons[row][col].config(text=str(adjacent_mines), bg="#ccc")
@@ -145,6 +147,8 @@ class Minesweeper:
                 self.game_over = True
                 elapsed_time = round(time.time() - self.start_time)
                 messagebox.showinfo("Game Clear", f"Congratulations! You have cleared the game in {elapsed_time} seconds.")
+                self.master.destroy()
+                self.return_to_start_menu()
 
         # イベントハンドラを削除してセルをクリック後に無効にする
         self.buttons[row][col].unbind('<Button-1>')
@@ -235,6 +239,15 @@ class Minesweeper:
         self.timer_label.config(text=time_str)
         if not self.game_over:
             self.master.after(1000, self.update_timer)
+
+    def return_to_start_menu(self):
+        """
+        ゲーム終了後にゲーム開始画面に戻る
+        """
+        root = tk.Tk()
+        root.title("Minesweeper")
+        _ = StartMenu(root)
+        root.mainloop()
 
 def main():
     root = tk.Tk()
