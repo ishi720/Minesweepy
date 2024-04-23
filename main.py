@@ -26,6 +26,7 @@ class StartMenu:
         self.start_button.pack()
 
 
+
     def start_game(self):
         try:
             mines = int(self.spin.get())
@@ -54,6 +55,7 @@ class Minesweeper:
         self.first_click = True # 最初のクリックかどうかのフラグ
         self.start_time = None  # ゲーム開始時刻
 
+
         # ゲーム開始時刻を設定
         self.start_time = time.time()
 
@@ -75,6 +77,13 @@ class Minesweeper:
                 button_row.append(button)
             self.buttons.append(button_row)
 
+
+        self.flags_left = mines  # 残りの旗の数
+
+        # 旗の数を表示するラベルを作成
+        self.flags_label = tk.Label(master, text=f"🚩: {self.flags_left}")
+        self.flags_label.grid(row=self.rows + 1, column=0, columnspan=self.cols, sticky="w")  # 左揃えにする
+    
     def place_mines(self, first_click_row, first_click_col):
         """
         地雷の配置
@@ -167,9 +176,15 @@ class Minesweeper:
         if cell in self.flags:
             self.flags.remove(cell)
             self.buttons[row][col].config(text="")
+            self.flags_left += 1  # 旗の数を増やす
         elif self.buttons[row][col]["text"] == "":
-            self.flags.add(cell)
-            self.buttons[row][col].config(text="🚩")
+            if self.flags_left > 0:
+                self.flags.add(cell)
+                self.buttons[row][col].config(text="🚩")
+                self.flags_left -= 1  # 旗の数を減らす
+
+        # 旗の数を更新
+        self.flags_label.config(text=f"🚩: {self.flags_left}")
 
     def count_adjacent_mines(self, row, col):
         """
