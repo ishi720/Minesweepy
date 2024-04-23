@@ -1,6 +1,7 @@
 import tkinter as tk
 from tkinter import messagebox
 import random
+import time
 
 class StartMenu:
     """
@@ -42,6 +43,17 @@ class Minesweeper:
         self.open_cells = 0 # 開かれたセルの数
         self.flags = set() # 設置されたフラグのセット
         self.first_click = True # 最初のクリックかどうかのフラグ
+        self.start_time = None  # ゲーム開始時刻
+
+        # ゲーム開始時刻を設定
+        self.start_time = time.time()
+
+        # タイマーを表示するラベルを作成
+        self.timer_label = tk.Label(master, text="Time: 0")
+        self.timer_label.grid(row=self.rows + 1, columnspan=self.cols)
+
+        # タイマーを更新する関数を定期的に呼び出す
+        self.update_timer()
 
         # ゲームボードの作成
         for row in range(self.rows):
@@ -122,7 +134,8 @@ class Minesweeper:
             # ゲームクリアの処理
             if self.open_cells == self.cells_to_open:
                 self.game_over = True
-                messagebox.showinfo("Game Clear", "Congratulations! You have cleared the game.")
+                elapsed_time = round(time.time() - self.start_time)
+                messagebox.showinfo("Game Clear", f"Congratulations! You have cleared the game in {elapsed_time} seconds.")
 
         # イベントハンドラを削除してセルをクリック後に無効にする
         self.buttons[row][col].unbind('<Button-1>')
@@ -201,6 +214,18 @@ class Minesweeper:
 
         if text in color_map:
             button.config(fg=color_map[text])
+
+    def update_timer(self):
+        """
+        タイマーの更新
+        """
+        elapsed_time = time.time() - self.start_time
+        minutes = int(elapsed_time // 60)
+        seconds = int(elapsed_time % 60)
+        time_str = f"Time: {minutes:02d}:{seconds:02d}"
+        self.timer_label.config(text=time_str)
+        if not self.game_over:
+            self.master.after(1000, self.update_timer)
 
 def main():
     root = tk.Tk()
