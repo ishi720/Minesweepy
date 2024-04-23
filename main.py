@@ -9,13 +9,22 @@ class StartMenu:
     """
     def __init__(self, master):
         self.master = master
+        master.title("Minesweeper")
+        master.geometry("300x200")
+
+        self.title_label = tk.Label(master, text="Minesweeper", font=("Helvetica", 20))
+        self.title_label.pack(pady=20)  # タイトルを配置
+
         self.label = tk.Label(master, text="地雷の数を指定")
         self.label.pack()
+
         self.default_mines = tk.StringVar(value="10")  # デフォルトの地雷の数を設定
         self.spin = tk.Spinbox(master, from_=1, to=100, textvariable=self.default_mines)
         self.spin.pack()
+
         self.start_button = tk.Button(master, text="Start", command=self.start_game)
         self.start_button.pack()
+
 
     def start_game(self):
         try:
