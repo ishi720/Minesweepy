@@ -28,7 +28,7 @@ class StartMenu:
     def start_game(self):
         try:
             mines = int(self.spin.get())
-            self.master.destroy()  # Close start menu
+            self.master.destroy()  # スタート画面を閉じる
             root = tk.Tk()
             root.title("Minesweeper")
             _ = Minesweeper(root, mines=mines)
@@ -53,7 +53,6 @@ class Minesweeper:
         self.first_click = True # 最初のクリックかどうかのフラグ
         self.start_time = None  # ゲーム開始時刻
 
-
         # ゲーム開始時刻を設定
         self.start_time = time.time()
 
@@ -63,6 +62,10 @@ class Minesweeper:
 
         # タイマーを更新する関数を定期的に呼び出す
         self.update_timer()
+
+        # 残りのセルの数を表示するラベルを作成
+        self.remaining_cells_label = tk.Label(master, text=f"残: {self.cells_to_open}")
+        self.remaining_cells_label.grid(row=self.rows + 1, columnspan=self.cols, sticky="e")
 
         # ゲームボードの作成
         for row in range(self.rows):
@@ -75,13 +78,12 @@ class Minesweeper:
                 button_row.append(button)
             self.buttons.append(button_row)
 
-
         self.flags_left = mines  # 残りの旗の数
 
         # 旗の数を表示するラベルを作成
         self.flags_label = tk.Label(master, text=f"🚩: {self.flags_left}")
         self.flags_label.grid(row=self.rows + 1, column=0, columnspan=self.cols, sticky="w")  # 左揃えにする
-    
+
     def place_mines(self, first_click_row, first_click_col):
         """
         地雷の配置
@@ -148,6 +150,9 @@ class Minesweeper:
             self.open_cells += 1
             if adjacent_mines == 0:
                 self.reveal_empty_cells(row, col)
+
+            # 残りのセルの数を更新
+            self.update_remaining_cells()
 
             # ゲームクリアの処理
             if self.open_cells == self.cells_to_open:
@@ -252,6 +257,13 @@ class Minesweeper:
         self.timer_label.config(text=time_str)
         if not self.game_over:
             self.master.after(1000, self.update_timer)
+
+    def update_remaining_cells(self):
+        """
+        残りのセルの数を更新する
+        """
+        remaining_cells = self.cells_to_open - self.open_cells
+        self.remaining_cells_label.config(text=f"残: {remaining_cells}")
 
     def return_to_start_menu(self):
         """
