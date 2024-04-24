@@ -1,8 +1,7 @@
 import tkinter as tk
-from tkinter import messagebox
+from tkinter import messagebox, ttk
 import random
 import time
-from tkinter import ttk
 
 class StartMenu:
     """
