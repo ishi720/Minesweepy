@@ -73,8 +73,8 @@ class Minesweeper:
             for col in range(self.cols):
                 button = tk.Button(master, width=2)
                 button.grid(row=row, column=col)
-                button.bind('<Button-1>', lambda event, r=row, c=col: self.left_click(event, r, c))
-                button.bind('<Button-3>', lambda event, r=row, c=col: self.right_click(event, r, c))
+                button.bind('<ButtonRelease-1>', lambda event, r=row, c=col: self.left_click(event, r, c))
+                button.bind('<ButtonRelease-3>', lambda event, r=row, c=col: self.right_click(event, r, c))
                 button_row.append(button)
             self.buttons.append(button_row)
 
